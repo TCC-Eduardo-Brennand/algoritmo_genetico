@@ -13,6 +13,29 @@ The project aims to find the best pit stop strategy and tire compound selection 
 - **NumPy** for mathematical operations
 - **FastF1** for obtaining historical Formula 1 race data
 
+- ## How to Run
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/TCC-Eduardo-Brennand/algoritmo_genetico.git
+   cd algoritmo_genetico
+   ```
+
+2. Install dependencies using Poetry:
+   ```bash
+   poetry install
+   ```
+
+3. Activate the virtual environment:
+   ```bash
+   poetry shell
+   ```
+
+4. Open Jupyter Notebook to explore the data:
+   ```bash
+   jupyter notebook
+   ```
+
 ## Results
 
 The algorithm was tested with real data from past Formula 1 seasons and demonstrated efficiency in optimizing pit stop strategies. Comparative analysis showed that the genetic algorithm approach can find competitive solutions compared to strategies used by real teams.
