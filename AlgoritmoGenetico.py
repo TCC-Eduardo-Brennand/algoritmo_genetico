@@ -20,9 +20,6 @@ class BuscaGenetica:
         """Inicializa o algoritmo genético."""
         # Gera a primeira população totalmente randomica
         populacao = self.gerarPopulacao()
-        print(50 * '-')
-        print("INIIALZIZANDO ALGORITMO GENÉTICO")
-        print(50 * '-')
         for p in range(self.geracoes):
             # 1. Elitismo
             selecionados_elitismo = self.selecionarMelhoresIndividuos(
@@ -44,11 +41,11 @@ class BuscaGenetica:
 
             selecionados = np.append(selecionados, selecionados_elitismo)
             populacao = selecionados
-        
+
             melhor_individuo = min(populacao, key=lambda x: x['Tempo'])
 
-            print("MELHOR INDIVIDUO DA GERAÇÃO " + str(p))
-            print(melhor_individuo)
+            # print("MELHOR INDIVIDUO DA GERAÇÃO " + str(p))
+            # print(melhor_individuo)
 
         return populacao, melhor_individuo
 
@@ -109,7 +106,7 @@ class BuscaGenetica:
 
         # Agora vamos montar a estrategia completa
         for volta in range(1, self.circuito.total_voltas):
-            novoComposto = random.choices([False, True], weights=(95, 5), k=1)
+            novoComposto = random.choices([False, True], weights=(90, 10), k=1)
 
             if novoComposto[0]:
                 composto = self.escolherCompostoAleatorio()
@@ -130,7 +127,6 @@ class BuscaGenetica:
 
         # Verifica se só utilizou um tipo de pneu
         if (len(set(individuo['OrdemCompostos'])) == 1):
-            print('errou')
             tempo_total += 3600
 
         # Verifica se não houveram pitstops
@@ -163,7 +159,10 @@ class BuscaGenetica:
 
     def escolherCompostoAleatorio(self):
         """Escolhe um composto aleatório."""
-        return random.choice(['SOFT', 'MEDIUM', 'HARD'])
+        if self.circuito.pais == 'Spain':
+            return random.choice(['SOFT', 'MEDIUM'])
+        else:
+            return random.choice(['SOFT', 'MEDIUM', 'HARD'])
 
     def estimarTempoVolta(self, composto, volta):
         """Estima o tempo médio de volta de acordo com o tipo de pneu
@@ -176,7 +175,7 @@ class BuscaGenetica:
             diferenca_volta = volta - len(media_tempos_voltas[composto])
             # Adicionamos 0.1s a cada volta que não temos mapeada no dicionario
             media_tempo_volta = media_tempos_voltas[composto][-1] + (
-                0.1 * diferenca_volta)
+                0.5 * diferenca_volta)
 
         return media_tempo_volta
 
@@ -235,7 +234,7 @@ class BuscaGenetica:
             mutacao_pp = random.random()
 
             # 1. Mutação dos pneus
-            if mutacao_pp <= self.mutacao_pb:
+            if random.random() <= self.mutacao_pb:
                 indice_pneu = random.randint(0, len(individuo['OrdemCompostos']) - 1)
                 novo_pneu = self.escolherCompostoAleatorio()
                 individuo['OrdemCompostos'][indice_pneu] = novo_pneu
@@ -244,7 +243,7 @@ class BuscaGenetica:
                 individuo['Tempo'] = self.avaliarIndividuo(individuo)
                 selecionados.append(individuo)
             # 2. Mutação da volta do pitstop
-            elif mutacao_pp <= self.mutacao_pb:
+            if random.random() <= self.mutacao_pb:
                 if len(individuo['PitStops']) > 0:
                     indice_volta = random.randint(0, len(individuo['PitStops']) - 1)
                     novo_pitstop = random.randint(1, self.circuito.total_voltas)
@@ -258,7 +257,7 @@ class BuscaGenetica:
                 individuo['Tempo'] = self.avaliarIndividuo(individuo)
                 selecionados.append(individuo)   
             # 3. Mutação para adicionar ou remover pitstops
-            elif mutacao_pp <= self.mutacao_pb:
+            if random.random() <= self.mutacao_pb:
                 if len(individuo['PitStops']) < 5:
                     indice_volta = random.randint(0, len(individuo['PitStops']) - 1)
                     novo_pitstop = random.randint(1, self.circuito.total_voltas)
@@ -277,9 +276,18 @@ class BuscaGenetica:
                 selecionados.append(individuo)
 
         return selecionados, total_individuos_mutados
-   
+
 # Configuração teste
-ga1 = BuscaGenetica(500, 0.01, 0.1, 500, 0.1, 'Italy')
+# ga1 = BuscaGenetica(500, 0.01, 0.1, 500, 0.1, 'Italy')
 
 # Melhor configuração encontrada pelo Analise.py:
-ga2 = BuscaGenetica(50, 0.01, 0.5, 300, 0.1, 'Italy')
+# ga2 = BuscaGenetica(50, 0.01, 0.5, 300, 0.1, 'Great Britain')
+
+#ga2 = BuscaGenetica(2, 0.01, 0.5, 1, 0.1, 'Great Britain')
+
+#t = ga2.inicializarBuscaGenetica()
+#teste = {'OrdemCompostos': ['MEDIUM', 'HARD', 'SOFT'], 'PitStops': [20, 39]}
+
+#print("INDIVIDUO TESTE")
+#print(ga2.avaliarIndividuo(teste))
+#print(t)

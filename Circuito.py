@@ -1,12 +1,11 @@
 import pandas as pd
 
-df = pd.read_parquet(path='Dados/data_pneus.parquet')
-
+df = pd.read_parquet(path='Dados/data_final.parquet')
 
 class Circuito():
     def __init__(self, pais):
         self.pais = pais
-        self.df = df.loc[(df['Country'] == self.pais)]
+        self.df = df.loc[(df['Country'] == self.pais) & (df['Year'] == 2022)]
         self.total_voltas = self.buscarTotalVoltas()
         self.media_tempo_pitstop = self.calcularTempoMedioPitstop()
         self.medias_tempos_voltas = self.estimarTemposVoltas()
@@ -50,5 +49,3 @@ class Circuito():
             'Compound')['LapTime'].apply(list).to_dict()
 
         return tempo_volta_dict
-
-

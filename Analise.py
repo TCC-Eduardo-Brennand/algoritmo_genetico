@@ -37,7 +37,7 @@ def buscarMelhoresParametros():
         )
 
         # Inicializando a busca genética
-        populacao, melhor_individuo =  busca_genetica.inicializarBuscaGenetica()
+        populacao, melhor_individuo = busca_genetica.inicializarBuscaGenetica()
 
         # Avaliar a melhor solução desta rodada
         melhor_individuo_atual = min(populacao, key=lambda x: x['Tempo'])
