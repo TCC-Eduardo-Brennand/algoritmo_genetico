@@ -19,7 +19,7 @@ The algorithm was tested with real data from past Formula 1 seasons and demonstr
 
 ## Authors
 
-- **Eduardo** - Lead developer and author of the paper
+- **Eduardo de Lira Brennand** - Lead developer and author of the paper
 
 ## References
 
